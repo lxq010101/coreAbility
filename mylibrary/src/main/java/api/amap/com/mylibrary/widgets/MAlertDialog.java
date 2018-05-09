@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import api.amap.com.library.R;
+import api.amap.com.mylibrary.R;
 
 
 public class MAlertDialog {
