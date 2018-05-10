@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "api.amap.com.demo"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -18,7 +18,7 @@ android {
     }
     repositories {
         flatDir {
-            dirs '../mylibrary/libs'
+            dirs 'libs'
         }
     }
 }
@@ -31,4 +31,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compile project(":mylibrary")
+        compile(name: 'Ability-release', ext: 'aar')
 }

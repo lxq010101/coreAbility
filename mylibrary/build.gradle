@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -45,7 +45,7 @@ dependencies {
     compile 'com.github.vondear:RxTools:v1.7.7.1'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
 
-    compile(name: 'Ability', ext: 'aar')
+//    compile(name: 'Ability', ext: 'aar')
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.github.bumptech.glide:glide:4.1.1'
     compile 'com.mabeijianxi:small-video-record2:2.0.3@aar'

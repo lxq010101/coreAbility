@@ -2,6 +2,7 @@ package api.amap.com.mylibrary;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -10,17 +11,23 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson.JSON;
+//import com.alibaba.fastjson.JSONObject;
 import com.tbruyelle.rxpermissions.RxPermissions;
-import com.ustcinfo.mobile.platform.ability.apicallback.HttpCallbackListener;
-import com.ustcinfo.mobile.platform.ability.jsbridge.JsMethodAdapter;
-import com.ustcinfo.mobile.platform.ability.jsbridge.JsWebView;
-import com.ustcinfo.mobile.platform.ability.utils.CheckJsUpdateUtils;
-import com.ustcinfo.mobile.platform.ability.utils.HttpUtil;
-import com.ustcinfo.mobile.platform.ability.utils.MConfig;
+//import com.ustcinfo.mobile.platform.ability.apicallback.HttpCallbackListener;
+//import com.ustcinfo.mobile.platform.ability.jsbridge.JsMethodAdapter;
+//import com.ustcinfo.mobile.platform.ability.jsbridge.JsWebView;
+//import com.ustcinfo.mobile.platform.ability.utils.CheckJsUpdateUtils;
+//import com.ustcinfo.mobile.platform.ability.utils.HttpUtil;
+//import com.ustcinfo.mobile.platform.ability.utils.MConfig;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import api.amap.com.mylibrary.widgets.MAlertDialog;
 import rx.functions.Action1;
@@ -30,7 +37,7 @@ import rx.functions.Action1;
  */
 
 public class MainActivity extends AppCompatActivity {
-    JsWebView webView;
+//    JsWebView webView;
     //创建属于主线程的handler
     Handler handler = new Handler();
     private String result;
@@ -39,8 +46,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        webView = findViewById(R.id.webview);
+        try {
+            Class c = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.JsWebView");
+            Constructor con = c.getConstructor(Context.class);
+            ViewGroup obj  = (ViewGroup) con.newInstance(this);
+            obj.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            setContentView(obj);
+
+
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
         checkPermissions();
     }
 
@@ -83,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                             }).show();
                         } else {
                             try {
-                                webView.loadUrl("file:///android_asset/demo/index.html");
+//                                webView.loadUrl("file:///android_asset/demo/index.html");
 //                                AmapLocation.get().lunch(MainActivity.this);
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), "请放入h5文件", Toast.LENGTH_LONG).show();
@@ -94,52 +121,52 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void getupdate() {
-        HttpUtil.startGet(MConfig.get(MainActivity.this, "GetUpdate"), null, new HttpCallbackListener() {
-            @Override
-            public void onSucess(String s) {
-                JSONObject object = JSON.parseObject(s);
-                httpversion = object.getIntValue("verson");
-                handler.post(runnableupdate);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Log.e("请求错误", e.toString());
-            }
-        });
-    }
-
-    // 构建Runnable对象，在runnable中更新界面
-    Runnable runnableupdate = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                CheckJsUpdateUtils.CheckJsUpdate(MainActivity.this, webView, httpversion);
-            } catch (Exception e) {
-            }
-        }
-    };
+//    private void getupdate() {
+//        HttpUtil.startGet(MConfig.get(MainActivity.this, "GetUpdate"), null, new HttpCallbackListener() {
+//            @Override
+//            public void onSucess(String s) {
+//                JSONObject object = JSON.parseObject(s);
+//                httpversion = object.getIntValue("verson");
+//                handler.post(runnableupdate);
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//                Log.e("请求错误", e.toString());
+//            }
+//        });
+//    }
+//
+//    // 构建Runnable对象，在runnable中更新界面
+//    Runnable runnableupdate = new Runnable() {
+//        @Override
+//        public void run() {
+//            try {
+//                CheckJsUpdateUtils.CheckJsUpdate(MainActivity.this, webView, httpversion);
+//            } catch (Exception e) {
+//            }
+//        }
+//    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        JsMethodAdapter.getmInstance().onActivityResult(requestCode, resultCode, data);
+       // JsMethodAdapter.getmInstance().onActivityResult(requestCode, resultCode, data);
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        JsMethodAdapter.unRegister();
+      //  JsMethodAdapter.unRegister();
     }
 
     @Override
     public void onBackPressed() {
-        if (webView.canBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
-        }
+//        if (webView.canBack()) {
+//            webView.goBack();
+//        } else {
+//            super.onBackPressed();
+//        }
     }
 }
