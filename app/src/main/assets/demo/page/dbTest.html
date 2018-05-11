@@ -1,0 +1,285 @@
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<style type="text/css">
+			.cameraImg {
+				width: 65px;
+				height: 65px;
+			}
+			
+			.showImg {
+				width: 200px;
+				height: 260px;
+			}
+			
+			ul li {
+				list-style-type: none;
+			}
+		</style>
+
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">数据库操作</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<p>该功能可在Android内置的数据库中建表，存储大量复杂的关系型数据。 这里以简单的员工信息表为例： 假设表名为emp，属性有工号，姓名，年龄，性别，职业，部门等。
+				</p>
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>工号</label>
+						<input id="id" type="text" class="mui-input-clear" placeholder="请输入工号">
+					</div>
+					<div class="mui-input-row">
+						<label>姓名</label>
+						<input id="name" type="text" class="mui-input-clear" placeholder="请输入姓名">
+					</div>
+					<div class="mui-input-row">
+						<label>年龄</label>
+						<input id="age" type="text" class="mui-input-clear" placeholder="请输入年龄">
+					</div>
+					<div class="mui-input-row">
+						<label>性别</label>
+						<input id="sex" type="text" class="mui-input-clear" placeholder="请输入性别">
+					</div>
+					<div class="mui-input-row">
+						<label>部门</label>
+						<input id="dept" type="text" class="mui-input-clear" placeholder="请输入部门">
+					</div>
+				</form>
+				<div><button type="button" class="mui-btn mui-btn-primary " onclick="createTableInfo()">建表</button>
+					<button type="button" class="mui-btn mui-btn-primary " onclick="dropTable()">删表</button>
+				</div>
+
+				<div style="margin-top: 5px;"><button type="button" class="mui-btn mui-btn-primary " onclick="insertInfo()">增加</button>
+					<button type="button" class="mui-btn mui-btn-primary " onclick="selectInfos()">查询</button>
+					<button type="button" class="mui-btn mui-btn-primary " onclick="updateInfo()">修改</button>
+					<button type="button" class="mui-btn mui-btn-primary " onclick="deleteInfo()">删除</button>
+				</div>
+				<!--数据库操作信息提示-->
+				<div id="showReturnMsg">
+				</div>
+				<script id="tpl" type="text/html">
+					<%:=empListTpl({list: list1, empTpl: empTpl})%>
+				</script>
+
+				<script id="child-tpl" type="text/html">
+					<ul style="color: #8f8f94; font-size: 14px; margin-bottom: 10px; float: left;">
+						<%list.forEach(function (emp) {%>
+						<%:=empTpl(emp)%>
+						<%})%>
+					</ul>
+				</script>
+
+				<script id="sub-child-tpl" type="text/html">
+					<li>
+						工号：
+						<%=id%> 姓名：
+						<%=name%> 年龄：
+						<%=age%> 性别：
+						<%=sex%> 部门：
+						<%=dept%>
+					</li>
+				</script>
+			</div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../bridge.js"></script>
+		<script src="../js/template.js"></script>
+		<script src="../plugins/zepto.min.js"></script>
+		<script>
+			mui.init({
+				swipeBack: false
+			});
+			//建表
+			function createTableInfo() {
+				Mplat.createTableInfo({
+					params: {
+						"tableName": "emp",
+						"column": [{
+								"name": "id",
+								"type": "int",
+								"isId": true,
+								"isAutoIncrement": true
+							},
+							{
+								"name": "name",
+								"type": "string",
+								"isId": false,
+								"isAutoIncrement": false
+							}, {
+								"name": "age",
+								"type": "int",
+								"isId": false,
+								"isAutoIncrement": false
+							}, {
+								"name": "sex",
+								"type": "string",
+								"isId": false,
+								"isAutoIncrement": false
+							}, {
+								"name": "dept",
+								"type": "string",
+								"isId": false,
+								"isAutoIncrement": false
+							}
+						]
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+			}
+
+			//在数据库插入数据
+			function insertInfo() {
+				var id = $("#id").val();
+				var name = $("#name").val();
+				var age = $("#age").val();
+				var sex = $("#sex").val();
+				var dept = $("#dept").val();
+				//				if(!(id && name && age && sex && dept)) {
+				//					mui.toast("请输入相关字段信息");
+				//					return;
+				//				}
+				var columnData = [{
+						"name": "id",
+						"type": "int",
+						"value": id
+					},
+					{
+						"name": "name",
+						"type": "string",
+						"value": name
+					}, {
+						"name": "age",
+						"type": "int",
+						"value": age
+					}, {
+						"name": "sex",
+						"type": "string",
+						"value": sex
+					}, {
+						"name": "dept",
+						"type": "string",
+						"value": dept
+					}
+				];
+
+				Mplat.insertInfo({
+					params: {
+						"tableName": "emp",
+						"column": columnData
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+			}
+
+			//查询数据
+			function selectInfos() {
+				Mplat.selectInfos({
+					params: {
+						"tableName": "emp",
+					},
+					callback: function(data) {
+						if(data != null) {
+							data = JSON.parse(data);
+							mui.toast(data.msg);
+							if(data.code == 0) {
+								showTpMsg(data.data);
+							}
+						}
+
+					}
+				});
+			}
+
+			function showTpMsg(data) {
+				var tpl = template(document.getElementById('tpl').innerHTML);
+				var childTpl = template(document.getElementById('child-tpl').innerHTML);
+				var subChildTpl = template(document.getElementById('sub-child-tpl').innerHTML);
+
+				var html = tpl({
+					empListTpl: childTpl,
+					empTpl: subChildTpl,
+					list1: data
+				})
+				document.getElementById('showReturnMsg').innerHTML = html;
+			}
+
+			//删除表
+			function dropTable() {
+				Mplat.dropTable({
+					params: {
+						"tableName": "emp",
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+			}
+			//删除表中信息
+			function deleteInfo() {
+				var value = $("#age").val();
+				Mplat.deleteInfo({
+					params: {
+						"tableName": "emp",
+						"condition": {
+							"name": "age",
+							"value": value,
+							"type": "int"
+						}
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+			}
+
+			//修改表中数据
+			function updateInfo() {
+				Mplat.updateInfo({
+					params: {
+						"tableName": "emp",
+						"condition": {
+							"name": "age",
+							"value": 0,
+							"type": "int"
+						},
+						"column": [{
+								"name": "name",
+								"type": "string",
+								"value": "小黄"
+							},
+							{
+								"name": "age",
+								"type": "int",
+								"value": 3
+							}
+						]
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

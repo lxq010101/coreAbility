@@ -9,25 +9,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-//import com.alibaba.fastjson.JSON;
-//import com.alibaba.fastjson.JSONObject;
+//import com.amap.querry.AmapLocation;
+import com.amap.querry.AmapLocation;
 import com.tbruyelle.rxpermissions.RxPermissions;
-//import com.ustcinfo.mobile.platform.ability.apicallback.HttpCallbackListener;
-//import com.ustcinfo.mobile.platform.ability.jsbridge.JsMethodAdapter;
-//import com.ustcinfo.mobile.platform.ability.jsbridge.JsWebView;
-//import com.ustcinfo.mobile.platform.ability.utils.CheckJsUpdateUtils;
-//import com.ustcinfo.mobile.platform.ability.utils.HttpUtil;
-//import com.ustcinfo.mobile.platform.ability.utils.MConfig;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import api.amap.com.mylibrary.widgets.MAlertDialog;
 import rx.functions.Action1;
@@ -37,23 +31,34 @@ import rx.functions.Action1;
  */
 
 public class MainActivity extends AppCompatActivity {
-//    JsWebView webView;
+    //    JsWebView webView;
     //创建属于主线程的handler
     Handler handler = new Handler();
     private String result;
     private int httpversion;
+    Class c;
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            Class c = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.JsWebView");
+//            c = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.JsWebView");
+            c = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.BridgeWebView");
+
             Constructor con = c.getConstructor(Context.class);
-            ViewGroup obj  = (ViewGroup) con.newInstance(this);
-            obj.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            webView = (WebView) con.newInstance(this);
+            webView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//            Method method = c.getMethod("loadUrl",String.class);
+//            method.invoke(obj,new Object[]{"file:///android_asset/demo/index.html"});
+//            View view =   obj.getChildAt(0);
+//            view.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-            setContentView(obj);
+            setContentView(webView);
 
+            Class JsMethodAdapter = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.JsMethodAdapter");
+            Method method = JsMethodAdapter.getMethod("register", c);
+            method.invoke(null, new Object[]{webView});
 
 
         } catch (ClassNotFoundException e) {
@@ -110,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
                             }).show();
                         } else {
                             try {
-//                                webView.loadUrl("file:///android_asset/demo/index.html");
-//                                AmapLocation.get().lunch(MainActivity.this);
+                                webView.loadUrl("file:///android_asset/demo/index.html");
+                                AmapLocation.get().lunch(MainActivity.this);
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), "请放入h5文件", Toast.LENGTH_LONG).show();
                             }
@@ -151,22 +156,51 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-       // JsMethodAdapter.getmInstance().onActivityResult(requestCode, resultCode, data);
+
+        Class JsMethodAdapter = null;
+        try {
+            JsMethodAdapter = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.JsMethodAdapter");
+            Method method = JsMethodAdapter.getMethod("getmInstance");
+            Object obj = method.invoke(null, null);
+            Method method2 = JsMethodAdapter.getMethod("onActivityResult", Integer.class, Integer.class, Intent.class);
+            method2.invoke(obj, new Object[]{requestCode, resultCode, data});
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-      //  JsMethodAdapter.unRegister();
+        try {
+            Class JsMethodAdapter = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.JsMethodAdapter");
+            Method method = JsMethodAdapter.getMethod("unRegister");
+            method.invoke(null, null);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        //  JsMethodAdapter.unRegister();
     }
 
     @Override
     public void onBackPressed() {
-//        if (webView.canBack()) {
-//            webView.goBack();
-//        } else {
-//            super.onBackPressed();
-//        }
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

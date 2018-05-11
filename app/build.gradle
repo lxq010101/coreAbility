@@ -21,6 +21,10 @@ android {
             dirs 'libs'
         }
     }
+
+    configurations {
+        compile.exclude module: 'amap'
+    }
 }
 
 dependencies {
@@ -31,5 +35,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compile project(":mylibrary")
-        compile(name: 'Ability-release', ext: 'aar')
+    compile(name: 'Ability-release', ext: 'aar')
 }

@@ -1,0 +1,103 @@
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<style type="text/css">
+			.mui-btn-block {
+				display: block;
+				width: 100%;
+				margin-bottom: 0px;
+				padding: 8px 0;
+			}
+			
+			.showImg {
+				width: 200px;
+				height: 260px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">打水印</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<p>该功能可在传入的照片上打上指定的水印</p>
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<la>
+							<input id="mark" type="text" class="mui-input-clear" placeholder="请输入水印内容">
+					</div>
+				</form>
+				<div class="mui-content-padded">
+					<button type="button" class="mui-btn mui-btn-primary mui-btn-block" onclick="mark()">打水印</button>
+				</div>
+
+				<div id="showPic">
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../bridge.js"></script>
+	<script src="../plugins/zepto.min.js"></script>
+	<script>
+		mui.init({
+			swipeBack: false
+		});
+		/**
+		 * 从相册中选择照片
+		 * @param {Object} params(参数) callback（回调函数，返回data ）
+		 */
+
+		function mark() {
+			var mark = $("#mark").val();
+			if(!mark) {
+				mui.toast("请输入水印内容");
+			} else {
+				Mplat.makeMark({
+					params: {
+						"photoPath": "/storage/emulated/0/mplat/image/兔兔_1524638846804.jpg",
+						"waterMarkInfo": mark
+					},
+					callback: function(data) {
+						//						data = JSON.parse(data);
+						//						showImg(data);
+						mui.toast(data);
+					}
+				});
+			}
+
+		}
+		//显示照片
+		function showImg(data) {
+			if(data.data.length > 0) {
+				var link = '';
+				for(var i = 0; i < data.data.length; i++) {
+					link += '<div style="text-align: center;margin: 1em;" >' +
+						'<img id="photo" class="showImg" src="' + data.data[i].photoPath + '"/>' +
+						'</div>' +
+						'<p>' + "照片名称：" + data.data[i].photoPath.substring(data.data[i].photoPath.lastIndexOf('\/') + 1, data.data[i].photoPath.length) + '</p>' +
+						'<p>' + "照片路径：" + data.data[i].photoPath + '</p>';
+					mui.toast(link);
+					$("#showPic").empty();
+					$("#showPic").append(link);
+				}
+			} else {
+				mui.toast("未获取到照片路径，请再试一次");
+			}
+
+		}
+	</script>
+
+</html>

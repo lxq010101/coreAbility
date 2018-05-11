@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello MUI</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui.min.css">
+    <style type="text/css">
+			#list {
+				/*避免导航边框和列表背景边框重叠，看起来像两条边框似得；*/
+				margin-top: -1px;
+			}
+
+
+
+
+
+
+
+
+
+    </style>
+    <style type="text/css">
+			li {
+				padding: 0.8em;
+				border-bottom: 1px solid #eaeaea;
+			}
+
+			li:active {
+				background: #f4f4f4;
+			}
+
+			.item {
+				display: block;
+				background: no-repeat right center url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAsCAYAAAB/nHhDAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAKwwAACsMBNCkkqwAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNC8yOC8xMqLz6JEAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAABJ0lEQVRYhe3Wv6rCMBQG8C/VN1AEd3HSzuYO3jr4knkY0UE62xTBcp9A8A0uHhc72CZp/lQQyZmT7xfSJKeMiPDOSt6aHoEIRKAbkLKioqiCrroWkLKi+51ARAhBlEAdXlcI0gLK8u8lPBRpAYvFjCUJUw72QZRbtFzOe0O0H7kvxHhM83yfhiJdF+2c5/utCTmdLnS93rQQs2mZQogN59lOdbrqmk7HmExGrZVYAU9kzXl2cEWsgSfys1r9Hk1TmogTAABFcTFOaQJOr6mUlVO4E9B8n2zCrQHfcAAYmoKFEAPOs39dOGMMaTpXX5J6jGlTTSu3CQcsGk5IuBboK1wJ6BqOT7gS0DUcn3AlALR7gW84YHGKiOAd3gn0UV/+6xiBCHwG8AByzMrOPKV7sAAAAABJRU5ErkJggg==);
+				background-size: 12px 22px;
+				-ms-touch-action: auto;
+			}
+
+			.chs {
+				font-size: 0.8em;
+				color: #838383;
+			}
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+
+<header class="mui-bar mui-bar-nav">
+    <!--<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>-->
+    <h1 class="mui-title">国创移动能力框架</h1>
+</header>
+<div class="mui-content" style="background:#FFFFFF;">
+    <ul style="list-style:none;margin:0;padding:0;text-align:left;">
+        <li onclick="scanGetCode()">
+					<span class="item">Barcode
+					<div class="chs">二维码扫描</div>
+				</span>
+        </li>
+        <li onclick="goNextPage('takephoto','page/takephoto.html')">
+					<span class="item">Camera
+					<div class="chs">拍照</div>
+				</span>
+        </li>
+        <li onclick="goNextPage('pickPic','page/pickPic.html')">
+					<span class="item">Gallery
+					<div class="chs">相册操作</div>
+				</span>
+        </li>
+        <li onclick="goNextPage('dbTest','page/dbTest.html')">
+					<span class="item">Database
+					<div class="chs">数据库操作</div>
+				</span>
+        </li>
+        <li onclick="recordVoice()">
+					<span class="item">Audio
+					<div class="chs">录音操作</div>
+				</span>
+        </li>
+        </li>
+        <li onclick="getLocationInfo();">
+					<span class="item">getLocationInfo
+					<div class="chs">定位</div>
+				</span>
+        </li>
+        </li>
+        <li onclick="addressBook();">
+					<span class="item">Contacts
+					<div class="chs">联系人操作</div>
+				</span>
+        </li>
+        </li>
+        <li onclick="goNextPage('sendMessage','page/sendMessage.html')">
+					<span class="item">Messaging
+					<div class="chs">短信</div>
+				</span>
+        </li>
+        <li onclick="goNextPage('Mark','page/waterMark.html')">
+					<span class="item">Mark
+					<div class="chs">打水印</div>
+				</span>
+        </li>
+        <li onclick="goNextPage('sign','page/sign.html')">
+					<span class="item">Electronic signature
+					<div class="chs">电子签名</div>
+				</span>
+        </li>
+        <!--<li onclick="uploadPic()">-->
+        <!--<span class="item">upload-->
+        <!--<div class="chs">图片上传</div>-->
+        <!--</span>-->
+        <!--</li>-->
+        <li onclick="DownLoadFile()">
+        <span class="item">DownLoadFile
+        <div class="chs">文件下载</div>
+        </span>
+        </li>
+        <li onclick="GetFileSize()">
+        <span class="item">GetFileSize
+        <div class="chs">获取文件大小</div>
+        </span>
+        </li>
+        <li onclick="CancelDownLoad()">
+        <span class="item">CancelDownLoad
+        <div class="chs">中断文件下载</div>
+        </span>
+        </li>
+        <li onclick="DeleteFile()">
+        <span class="item">DeleteFile
+        <div class="chs">文件删除</div>
+        </span>
+        </li>
+        <li onclick="LandscapeOrPortrait()">
+					<span class="item">LandscapeOrPortrait
+					<div class="chs">横竖屏判断</div>
+				</span>
+        </li>
+
+        <li onclick="getIntent()">
+					<span class="item">getIntent
+					<div class="chs">获取getIntent</div>
+				</span>
+        </li>
+        <li onclick="showLoading()">
+					<span class="item">showLoading
+					<div class="chs">显示加载框</div>
+				</span>
+        </li>
+        <li onclick="cancelLoading()">
+					<span class="item">cancelLoading
+					<div class="chs">关闭加载框</div>
+				</span>
+        </li>
+        <li onclick="showkeyboard()">
+					<span class="item">showkeyboard
+					<div class="chs">弹出数字软键盘</div>
+				</span>
+        </li>
+    </ul>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="bridge.js"></script>
+<script>
+			mui.init({
+				swipeBack: false
+			});
+
+			/**
+			 * 扫描
+			 * @param {Object}  callback（回调函数，返回data ）
+			 */
+			function scanGetCode() {
+				Mplat.scanGetCode(function(data) {
+					//建议将返回数据转换成json处理
+					data = JSON.parse(data);
+					mui.toast(data.data);
+				});
+
+			}
+
+			function goNextPage(id, url) {
+				mui.openWindow({
+					id: id,
+					url: url,
+					extras: {},
+					waiting: {
+						autoShow: true,
+						title: "正在加载！"
+					}
+				});
+			}
+
+			//录音
+			function recordVoice() {
+				Mplat.recordVoice({
+					params: {
+						"recordTime": "15",
+					},
+					callback: function(data) {
+						alert(data);
+					}
+				});
+			}
+
+           //图片上传
+			<!--function uploadPic(){-->
+			     <!--Mplat.uploadPicByPath({-->
+				 	<!--params: {-->
+						<!--"url": "",-->
+						<!--"photoPath":"/storage/emulated/0/mplat/image/兔兔_1524638846804.jpg,/storage/emulated/0/mplat/image/看看_1524638813296.jpg"-->
+					<!--"photoPath":"/storage/emulated/0/mplat/image/看看_1524638813296.jpg"-->
+
+					<!--},-->
+					<!--callback: function(data) {-->
+						<!--mui.toast(data);-->
+					<!--}-->
+				<!--});-->
+				<!--}-->
+
+				//文件下载
+			function DownLoadFile(){
+			     Mplat.DownLoadFile({
+				 	params: {
+				 	      "flag":"2",
+						"loadpath": "http://www.cnspsp.cn:18688/group1/M00/22/BB/wKgBg1qgkuuEOXODAAAAADGQcSQ923.apk",
+						"savename":"wangy"
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+				}
+				//获取文件大小
+			function GetFileSize(){
+			     Mplat.GetFileSize({
+				 	params: {
+						"savepath":"wangy"
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+				}
+//横竖屏判断
+			function LandscapeOrPortrait(){
+			     Mplat.LandscapeOrPortrait(function(data) {
+					mui.toast(data);
+				});
+				}
+
+				//联系人操作
+				function addressBook() {
+				Mplat.addressBook(function(data) {
+					mui.toast(data);
+					});
+			}
+//获取当前位置信息
+			function getLocationInfo(){
+			     Mplat.getLocationInfo(function(data) {
+					mui.toast(data);
+				});}
+				//删除文件
+			function DeleteFile(){
+			     Mplat.DeleteFile({
+				 	params: {
+						"filepath":"wangy"
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+				}
+				//中断文件下载
+				function CancelDownLoad(){
+			     Mplat.CancelDownLoad(function(data) {
+					mui.toast(data);
+				});}
+
+				//获取getIntent
+				function getIntent(){
+				 Mplat.getIntent({
+				 	params: {
+						"parameters":"wanggy,wanggy2"
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+				}
+				//显示加载框
+				function showLoading(){
+				 Mplat.showLoading({
+				 	params: {
+						"showInfo":"正在下载",
+						"isCancel":"false"
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+				}
+				//关闭加载框
+				function cancelLoading(){
+				Mplat.cancelLoading(function(data) {
+					mui.toast(data);
+				});
+				}
+
+				//弹出数字软键盘
+				function showkeyboard(){
+				Mplat.showkeyboard( {
+					params: {
+						"ispassword":"1"
+					},
+					callback: function(data) {
+						mui.toast(data);
+					}
+				});
+				}
+
+
+
+
+</script>
+</body>
+</html>
