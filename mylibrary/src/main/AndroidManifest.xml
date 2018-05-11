@@ -9,6 +9,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".AboutAppListActivity">
+
+        </activity>
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c2a82301c8b63dfce2eef9e638843af7" />

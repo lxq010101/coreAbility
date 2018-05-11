@@ -9,22 +9,31 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-//import com.amap.querry.AmapLocation;
 import com.amap.querry.AmapLocation;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import api.amap.com.mylibrary.widgets.JsWebView;
 import api.amap.com.mylibrary.widgets.MAlertDialog;
 import rx.functions.Action1;
+
+//import com.amap.querry.AmapLocation;
 
 /**
  * Created by xueqili on 2018/5/9.
@@ -37,41 +46,59 @@ public class MainActivity extends AppCompatActivity {
     private String result;
     private int httpversion;
     Class c;
-    WebView webView;
+    JsWebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
+//        try {
 //            c = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.JsWebView");
-            c = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.BridgeWebView");
-
-            Constructor con = c.getConstructor(Context.class);
-            webView = (WebView) con.newInstance(this);
-            webView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//            XmlPullParser parser = MainActivity.this.getResources().getXml(R.layout.textview);
+//            AttributeSet attributes = Xml.asAttributeSet(parser);
+//            int type;
+//            try{
+//                while ((type = parser.next()) != XmlPullParser.START_TAG &&
+//                        type != XmlPullParser.END_DOCUMENT) {
+//                    // Empty
+//                }
+//
+//                if (type != XmlPullParser.START_TAG) {
+//                    Log.e("","the xml file is error!\n");
+//                }
+//            } catch (XmlPullParserException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            Log.d("",""+parser.getAttributeCount());
+//            Constructor con = c.getConstructor(Context.class);
+//            webView = (ViewGroup) con.newInstance(this);
+//            webView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 //            Method method = c.getMethod("loadUrl",String.class);
-//            method.invoke(obj,new Object[]{"file:///android_asset/demo/index.html"});
-//            View view =   obj.getChildAt(0);
-//            view.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-            setContentView(webView);
-
-            Class JsMethodAdapter = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.JsMethodAdapter");
-            Method method = JsMethodAdapter.getMethod("register", c);
-            method.invoke(null, new Object[]{webView});
-
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+//            method.invoke(webView,new Object[]{"file:///android_asset/demo/index.html"});
+//
+//            setContentView(webView);
+//
+////            Class JsMethodAdapter = Class.forName("com.ustcinfo.mobile.platform.ability.jsbridge.JsMethodAdapter");
+////            Method method2 = JsMethodAdapter.getMethod("register", c);
+////            method2.invoke(null, new Object[]{webView});
+//
+//
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        }
+        setContentView(R.layout.activity_main);
+        webView = findViewById(R.id.web_view);
 
         checkPermissions();
     }
@@ -192,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-        //  JsMethodAdapter.unRegister();
     }
 
     @Override
