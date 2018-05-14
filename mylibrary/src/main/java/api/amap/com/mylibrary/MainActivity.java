@@ -2,30 +2,18 @@ package api.amap.com.mylibrary;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.util.Xml;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.amap.querry.AmapLocation;
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.umeng.analytices.MobclickAgent;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -143,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             try {
                                 webView.loadUrl("file:///android_asset/demo/index.html");
-                                AmapLocation.get().lunch(MainActivity.this);
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), "请放入h5文件", Toast.LENGTH_LONG).show();
                             }
@@ -228,5 +215,14 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }
